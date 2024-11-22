@@ -1,40 +1,60 @@
-import circle ''' circle: используется для работы с окружностью (площадь и периметр).'''
-import square '''square: используется для работы с квадратом (площадь и периметр).'''
+import circle
+import square
+import rectangle
+import triangle
 
+FIGS = ['circle', 'square', 'triangle', 'rectangle']
+FUNCS = ['perimeter', 'area']
+SIZES = {
+    'perimeter-circle': 1,
+    'area-circle': 1,
+    'perimeter-square': 1,
+    'area-square': 1,
+    'perimeter-rectangle': 2,
+    'area-rectangle': 2,
+    'perimeter-triangle': 3,
+    'area-triangle': 3,
+}
 
-figs = ['circle', 'square'] '''figs: список доступных фигур (circle, square).'''
-funcs = ['perimeter', 'area'] '''funcs: список доступных функций (perimeter, area).'''
-sizes = {} '''sizes: словарь для хранения параметров фигур.'''
 
 def calc(fig, func, size):
-        '''
-        Описание: Рассчитывает площадь или периметр для указанной фигуры с заданным размером.
-        '''
-	assert fig in figs
-	assert func in funcs
+    if any(isinstance(s, str) for s in size):
+        return
+    elif all(s >= 0 for s in size):
+        assert fig in FIGS
+        assert func in FUNCS
 
-	result = eval(f'{fig}.{func}(*{size})')
-	print(f'{func} of {fig} is {result}') '''Выводит результат вычисления.'''
-        
-if __name__ == "__main__":    ''' Параметры:  
-                              fig: название фигуры (круг или квадрат).
-                              func: операция (perimeter или area).
-                              size: размер фигуры (радиус или сторона).
-                              '''
-        func = '' 
-        fig = ''
-	size = list()
-        '''Запрашивает у пользователя название фигуры, операцию (площадь или периметр) и размеры.'''
-	while fig not in figs:
-		fig = input(f"Enter figure name, avaliable are {figs}:\n")
-	
-	while func not in funcs:
-		func = input(f"Enter function name, avaliable are {funcs}:\n")
-	
-	while len(size) != sizes.get(f"{func}-{fig}", 1):
-		size = list(map(int, input("Input figure sizes separated by space, 1 for circle and square\n").split(' ')))
-	
-	calc(fig, func, size)   '''Вызывает функцию calc для выполнения вычислений.'''
+        result = eval(f'{fig}.{func}(*{size})')
+        return result
+    else:
+        print("Sizes must be positive integers\n")
+        return
 
 
+if __name__ == "__main__":
+    func = ''
+    fig = ''
+    size = []
 
+    while fig not in FIGS:
+        fig = input(f"Enter figure name, available are {FIGS}:\n")
+
+    while func not in FUNCS:
+        func = input(f"Enter function name, available are {FUNCS}:\n")
+
+    while len(size) != SIZES.get(f"{func}-{fig}", 1):
+        try:
+            size = list(
+                map(
+                    int,
+                    input(
+                        "Input figure sizes separated by space,"
+                        " 1 for circle and square\n"
+                    ).split()
+                )
+            )
+        except ValueError:
+            print("Invalid input. Please enter integers only.")
+
+    result = calc(fig, func, size)
+    print(result)
