@@ -4,6 +4,7 @@ import sys
 sys.path.append('../geometric_lib')
 from calculate import calc
 
+
 @pytest.mark.parametrize('side_length, expected_area, is_valid', [
     ({1}, 1, True),
     ({3}, 9, True),
@@ -34,6 +35,7 @@ def test_square_perimeter(side_length, expected_perimeter, is_valid):
         assert result == expected_perimeter
     else:
         assert result != expected_perimeter
+        
 
 @pytest.mark.parametrize('sides, expected_area, is_valid', [
     ({3, 4, 5}, 6, True),
